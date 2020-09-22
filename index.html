@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js" charset="utf-8"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>MovieDb</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <ul id="movies-list">
+
+    </ul>
+
+    <script id="movies-template" type="text/x-handlebars-template">
+      <li>
+        <h3>Titolo: {{title}} </h3>
+        <h4>Titolo Originale: {{original_title}} </h4>
+        <p>Lingua: {{language}} </p>
+        <p>Valutazione: {{vote}} </p>
+      </li>
+    </script>
+
+  <script src="js/script.js"></script>
+  </body>
+</html>
