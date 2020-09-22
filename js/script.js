@@ -3,7 +3,7 @@ $(document).ready(function() {
 $(".search-btn").click(
   function() {
 
-  var cercaMovie = ""
+  var cercaMovie = $(".searchbar").val();;
 
   $.ajax(
     {
