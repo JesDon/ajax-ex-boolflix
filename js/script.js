@@ -1,16 +1,39 @@
 $(document).ready(function() {
 
+// AVVIO RICERCA CON BOTTONE
 $(".search-btn").click(
   function() {
+  var cercaMovie = $(".searchbar").val();
+  // SVUOTO LISTA FILM E CAMPO INPUT
+  $("#movies-list").html("");
+  $(".searchbar").val("");
+  getMovies(cercaMovie);
+  }
+);
 
-  var cercaMovie = $(".searchbar").val();;
+// AVVIO RICERCA CON TASTO INVIO
+$(".searchbar").keyup(
+  function(event) {
+  var cercaMovie = $(".searchbar").val();
+    if(event.which == 13) {
+      $("#movies-list").html("");
+      $(".searchbar").val("");
+      getMovies(cercaMovie);
+    }
+  }
+);
 
+// GRAFFE INIZIALI
+});
+
+// FUNZIONE CHE SI OCCUPA DI CONTATTARE API E STAMPA RISULTATO
+function getMovies(searchString) {
   $.ajax(
     {
       "url": "https://api.themoviedb.org/3/search/movie",
       "data": {
         "api_key": "eb2f4e43de2e0ba217e256f7b179c8cc",
-        "query": cercaMovie,
+        "query": searchString,
         "language": "it-IT"
       },
       "method": "GET",
@@ -20,14 +43,12 @@ $(".search-btn").click(
       "error": function(errore) {
         alert("Errore");
       }
-  });
-});
+    }
+  );
+}
 
-// GRAFFE INIZIALI
-});
-
+// FUNZIONE FILM
 function risultati(movies) {
-
   var source = $("#movies-template").html();
   var template = Handlebars.compile(source);
 
@@ -43,10 +64,8 @@ function risultati(movies) {
       "lang": lingua,
       "vote": voto,
     };
-
     // PREPARAZIONE HTML
     var html = template(context);
-
     // INIETTIAMO HTML IN TAG <UL>
     $("#movies-list").append(html);
   }
