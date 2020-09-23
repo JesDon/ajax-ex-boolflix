@@ -16,6 +16,7 @@ $(".searchbar").keyup(
   function(event) {
   var cercaMovie = $(".searchbar").val();
     if(event.which == 13) {
+      // SVUOTO LISTA FILM E CAMPO INPUT
       $("#movies-list").html("");
       $(".searchbar").val("");
       getMovies(cercaMovie);
@@ -57,13 +58,23 @@ function risultati(movies) {
     var titoloOriginale = movies[i].original_title;
     var lingua = movies[i].original_language;
     var voto = Math.round((movies[i].vote_average) / 2);
+    var stelle = "";
+
+      for (var j = 1; j <= 5; j++) {
+        if (j <= voto) {
+          stelle += "<i class='fas fa-star star star-full'></i>";
+        } else {
+          stelle += "<i class='fas fa-star star'></i>";
+        }
+      }
 
     var context = {
       "title": titolo,
       "orig_title": titoloOriginale,
       "lang": lingua,
       "vote": voto,
-    };
+      "stars": stelle,
+    }
     // PREPARAZIONE HTML
     var html = template(context);
     // INIETTIAMO HTML IN TAG <UL>

@@ -11,3 +11,12 @@
 .search-btn{
   font-size: 15px;
 }
+
+.star{
+  color: lightgrey;
+  font-size: 13px;
+}
+
+.star-full{
+  color: gold;
+}
