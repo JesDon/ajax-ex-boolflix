@@ -56,7 +56,7 @@ function risultati(movies) {
     var titolo = movies[i].title;
     var titoloOriginale = movies[i].original_title;
     var lingua = movies[i].original_language;
-    var voto = Math.round(movies[i].vote_average);
+    var voto = Math.round((movies[i].vote_average) / 2);
 
     var context = {
       "title": titolo,
