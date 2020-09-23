@@ -59,7 +59,9 @@ function risultati(movies) {
     var lingua = movies[i].original_language;
     var voto = Math.round((movies[i].vote_average) / 2);
     var stelle = "";
+    var bandiera = "";
 
+      // CICLO PER AGGIUNGERE STELLE E RIEMPIRLE
       for (var j = 1; j <= 5; j++) {
         if (j <= voto) {
           stelle += "<i class='fas fa-star star star-full'></i>";
@@ -68,12 +70,26 @@ function risultati(movies) {
         }
       }
 
+      // BANDIERE LINGUE
+      if (lingua == "it") {
+        bandiera = "<img class='flag' src='img/it.svg' alt='ITA'>";
+      } else if (lingua == "en") {
+        bandiera = "<img class='flag' src='img/en.svg' alt='ITA'>";
+      } else if (lingua == "fr") {
+        bandiera = "<img class='flag' src='img/fr.svg' alt='ITA'>";
+      } else if (lingua == "es") {
+        bandiera = "<img class='flag' src='img/es.svg' alt='ITA'>";
+      } else {
+        bandiera = lingua;
+      }
+
     var context = {
       "title": titolo,
       "orig_title": titoloOriginale,
       "lang": lingua,
       "vote": voto,
       "stars": stelle,
+      "flag": bandiera,
     }
     // PREPARAZIONE HTML
     var html = template(context);
