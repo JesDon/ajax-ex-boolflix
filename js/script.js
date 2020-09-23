@@ -47,7 +47,7 @@ function getMovies(searchString) {
   );
 }
 
-// FUNZIONE FILM
+// FUNZIONE ESTRAI FILM
 function risultati(movies) {
   var source = $("#movies-template").html();
   var template = Handlebars.compile(source);
@@ -56,7 +56,7 @@ function risultati(movies) {
     var titolo = movies[i].title;
     var titoloOriginale = movies[i].original_title;
     var lingua = movies[i].original_language;
-    var voto = movies[i].vote_average;
+    var voto = Math.round(movies[i].vote_average);
 
     var context = {
       "title": titolo,
