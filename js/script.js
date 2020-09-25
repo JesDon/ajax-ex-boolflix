@@ -8,6 +8,7 @@ $(".search-btn").click(
   $("#movies-list").html("");
   $(".searchbar").val("");
   getMovies(cercaMovie);
+  getSeries(cercaMovie);
   }
 );
 
@@ -20,6 +21,7 @@ $(".searchbar").keyup(
       $("#movies-list").html("");
       $(".searchbar").val("");
       getMovies(cercaMovie);
+      getSeries(cercaMovie);
     }
   }
 );
@@ -27,7 +29,9 @@ $(".searchbar").keyup(
 // GRAFFE INIZIALI
 });
 
-// FUNZIONE CHE SI OCCUPA DI CONTATTARE API E STAMPA RISULTATO
+// ----------FUNZIONI----------
+
+// FUNZIONE PER FILM
 function getMovies(searchString) {
   $.ajax(
     {
@@ -39,7 +43,7 @@ function getMovies(searchString) {
       },
       "method": "GET",
       "success": function(data) {
-        risultati(data.results);
+        risultati("film", data.results);
       },
       "error": function(errore) {
         alert("Errore");
@@ -48,18 +52,51 @@ function getMovies(searchString) {
   );
 }
 
-// FUNZIONE ESTRAI FILM
-function risultati(movies) {
+// FUNZIONE PER TV SERIES
+function getSeries(searchString) {
+  $.ajax(
+    {
+      "url": "https://api.themoviedb.org/3/search/tv",
+      "data": {
+        "api_key": "eb2f4e43de2e0ba217e256f7b179c8cc",
+        "query": searchString,
+        "language": "it-IT"
+      },
+      "method": "GET",
+      "success": function(data) {
+        risultati("series", data.results);
+      },
+      "error": function(errore) {
+        alert("Errore");
+      }
+    }
+  );
+}
+
+// FUNZIONE ESTRAI FILM E TV SERIES
+function risultati(tipologia, results) {
   var source = $("#movies-template").html();
   var template = Handlebars.compile(source);
 
-  for (var i = 0; i < movies.length; i++) {
-    var titolo = movies[i].title;
-    var titoloOriginale = movies[i].original_title;
-    var lingua = movies[i].original_language;
-    var voto = Math.round((movies[i].vote_average) / 2);
+  for (var i = 0; i < results.length; i++) {
+
+    // FUNZIONE PER SELEZIONARE FILM O TV SERIES
+    if (tipologia == "film") {
+      titolo = results[i].title;
+      titoloOriginale = results[i].original_title;
+      container = $("#movies-list");
+    } else if (tipologia == "series") {
+      titolo = results[i].name;
+      titoloOriginale = results[i].original_name;
+      container = $("#series-list");
+    }
+
+    // VARIABILI UGUALI PER FILM E TV SERIES
+    var lingua = results[i].original_language;
+    var voto = Math.round((results[i].vote_average) / 2);
     var stelle = "";
     var bandiera = "";
+
 
       // CICLO PER AGGIUNGERE STELLE E RIEMPIRLE
       for (var j = 1; j <= 5; j++) {
@@ -90,6 +127,7 @@ function risultati(movies) {
       "vote": voto,
       "stars": stelle,
       "flag": bandiera,
+      "type": tipologia,
     }
     // PREPARAZIONE HTML
     var html = template(context);

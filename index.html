@@ -15,14 +15,19 @@
       <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
     </div>
 
-    <ul id="movies-list">
-    </ul>
+    <h2>Film</h2>
+    <ul id="movies-list"></ul>
+
+    <h2>Serie Tv</h2>
+    <ul id="series-list"></ul>
 
     <script id="movies-template" type="text/x-handlebars-template">
       <li>
+        <div><img src="{{poster}}" alt="{{title}}">
         <h3>Titolo: {{title}} </h3>
+        <p>Tipologia: {{type}} </p>
         <p>Titolo Originale: {{orig_title}} </p>
-        <p>Lingua Originale: 
+        <p>Lingua Originale:
           <span>{{{flag}}}</span>
         </p>
         <p>Valutazione: {{vote}}
