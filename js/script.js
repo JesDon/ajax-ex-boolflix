@@ -91,12 +91,17 @@ function risultati(tipologia, results) {
       container = $("#series-list");
     }
 
+    if (results[i].poster_path == null) {
+      var locandina = "img/poster.jpg";
+    } else {
+      var locandina = "https://image.tmdb.org/t/p/w185"+results[i].poster_path;
+    }
+
     // VARIABILI UGUALI PER FILM E TV SERIES
     var lingua = results[i].original_language;
     var voto = Math.round((results[i].vote_average) / 2);
     var stelle = "";
     var bandiera = "";
-
 
       // CICLO PER AGGIUNGERE STELLE E RIEMPIRLE
       for (var j = 1; j <= 5; j++) {
@@ -128,6 +133,7 @@ function risultati(tipologia, results) {
       "stars": stelle,
       "flag": bandiera,
       "type": tipologia,
+      "poster": locandina,
     }
     // PREPARAZIONE HTML
     var html = template(context);
