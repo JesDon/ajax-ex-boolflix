@@ -10,30 +10,38 @@
   </head>
   <body>
 
-    <div>
-      <input class="searchbar" type="text" placeholder="Cerca film" name="search">
-      <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
-    </div>
+    <header>
+      <div>
+        <img class="logo"src="img/logo.png" alt="Boolfix Logo">
+      </div>
+      <div class="search">
+        <input class="searchbar" type="text" placeholder="Cerca film" name="search">
+        <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
+      </div>
+    </header>
 
-    <h2>Film</h2>
+    <main>
+
     <ul id="movies-list"></ul>
-
-    <h2>Serie Tv</h2>
     <ul id="series-list"></ul>
-
-    <script id="movies-template" type="text/x-handlebars-template">
+</main>
+    <script id="template" type="text/x-handlebars-template">
       <li>
-        <div><img src="{{poster}}" alt="{{title}}">
-        <h3>Titolo: {{title}} </h3>
-        <p>Tipologia: {{type}} </p>
-        <p>Titolo Originale: {{orig_title}} </p>
-        <p>Lingua Originale:
-          <span>{{{flag}}}</span>
-        </p>
-        <p>Valutazione: {{vote}}
-          <span>{{{stars}}}</span>
-        </p>
-        <br>
+        <div class="locandina"><img class="posters" src="{{poster}}" alt="{{title}}"></div>
+
+        <div class="general-info">
+          <h3>Titolo: {{title}} </h3>
+          <p>Tipologia: {{type}} </p>
+          <p>Titolo Originale: {{orig_title}} </p>
+          <p>Lingua Originale:
+            <span>{{{flag}}}</span>
+          </p>
+          <p>Valutazione: {{vote}}
+            <span>{{{stars}}}</span>
+          </p>
+          <br>
+        </div>
+
       </li>
     </script>
 

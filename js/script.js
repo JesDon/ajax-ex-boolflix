@@ -26,6 +26,12 @@ $(".searchbar").keyup(
   }
 );
 
+$(".posters").hover(
+  function() {
+    $(".general-info").show();
+  });
+
+
 // GRAFFE INIZIALI
 });
 
@@ -75,7 +81,7 @@ function getSeries(searchString) {
 
 // FUNZIONE ESTRAI FILM E TV SERIES
 function risultati(tipologia, results) {
-  var source = $("#movies-template").html();
+  var source = $("#template").html();
   var template = Handlebars.compile(source);
 
   for (var i = 0; i < results.length; i++) {
@@ -91,10 +97,11 @@ function risultati(tipologia, results) {
       container = $("#series-list");
     }
 
+    // FUNZIONE PER INSERIRE POSTER
     if (results[i].poster_path == null) {
-      var locandina = "img/poster.jpg";
+      var locandina = "img/no_poster.png";
     } else {
-      var locandina = "https://image.tmdb.org/t/p/w185"+results[i].poster_path;
+      var locandina = "https://image.tmdb.org/t/p/w342"+results[i].poster_path;
     }
 
     // VARIABILI UGUALI PER FILM E TV SERIES

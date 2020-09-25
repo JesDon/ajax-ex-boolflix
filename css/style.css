@@ -4,12 +4,62 @@
   box-sizing: border-box;
 }
 
+body{
+  background-color: grey;
+}
+
+/* SEARCHBAR */
+header{
+  background-color: black;
+  height: 80px;
+}
+
+.logo{
+  width: 150px;
+  padding: 20px 0 0 20px;
+}
+
+.search{
+  float: right;
+  margin: -45px 30px 0 0 ;
+}
+
 .searchbar{
   font-size: 15px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
 }
 
 .search-btn{
-  font-size: 15px;
+  font-size: 18px;
+  background-color: white;
+  margin-left: -30px;
+  border: none;
+  cursor: pointer;
+}
+/* /SEARCHBAR */
+
+/* POSTERS */
+.locandina{
+  float: left;
+  width: calc(100% / 3);
+  text-align: center;
+  padding: 30px 0 30px 0;
+}
+
+/* .posters{
+  width: 342px;
+} */
+/* /POSTERS */
+
+/* INFO FILM/SERIES */
+#movies-list, #series-list{
+  list-style: none;
+}
+
+.general-info{
+  display: none;
 }
 
 .star{
@@ -24,3 +74,4 @@
 .flag{
   width: 15px;
 }
+/* /INFO FILM/SERIES */
