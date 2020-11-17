@@ -26,7 +26,7 @@ $(".searchbar").keyup(
   }
 );
 
-$(".posters").hover(
+$(".locandina").mouseenter(
   function() {
     $(".general-info").show();
   });
@@ -41,7 +41,7 @@ $(".posters").hover(
 function getMovies(searchString) {
   $.ajax(
     {
-      "url": "https://api.themoviedb.org/3/search/movie",
+      "url": "https://localhost/php-ajax-dischi/server.php",
       "data": {
         "api_key": "eb2f4e43de2e0ba217e256f7b179c8cc",
         "query": searchString,
