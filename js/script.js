@@ -1,150 +1,217 @@
-$(document).ready(function() {
+$(document).ready(function(){
 
-// AVVIO RICERCA CON BOTTONE
-$(".search-btn").click(
-  function() {
-  var cercaMovie = $(".searchbar").val();
-  // SVUOTO LISTA FILM E CAMPO INPUT
-  $("#movies-list").html("");
-  $(".searchbar").val("");
-  getMovies(cercaMovie);
-  getSeries(cercaMovie);
+// Evento al click sul bottone "cerca"
+$("#cerca").click(function() {
+  // Prendiamo come query per la ricerca dei film l'input dell'utente
+  var inputUtente = $("#search-input").val();
+  // Chiamiamo la funzione di ricerca del film SE l'input non è vuoto
+  if(inputUtente != "") {
+    clearSearch();
+    movieTvSearch("movie", inputUtente);
+    movieTvSearch("tv", inputUtente);
+    $("#homepage-message").addClass('d-none');
+    $("#logo").addClass('d-none');
+    $("header").addClass("h-fix");
   }
-);
+});
 
-// AVVIO RICERCA CON TASTO INVIO
-$(".searchbar").keyup(
-  function(event) {
-  var cercaMovie = $(".searchbar").val();
-    if(event.which == 13) {
-      // SVUOTO LISTA FILM E CAMPO INPUT
-      $("#movies-list").html("");
-      $(".searchbar").val("");
-      getMovies(cercaMovie);
-      getSeries(cercaMovie);
+// Evento all'invio
+$("#search-input").keyup(
+  function(e){
+    if(e.which == 13) {
+    // Prendiamo come query per la ricerca dei film l'input dell'utente
+      var inputUtente = $("#search-input").val();
+      // Chiamiamo la funzione di ricerca del film SE l'input non è vuoto
+      if(inputUtente != "") {
+        clearSearch();
+        movieTvSearch("movie", inputUtente);
+        movieTvSearch("tv", inputUtente);
+        $("#homepage-message").addClass('d-none');
+        $("#logo").addClass('d-none');
+        $("header").addClass("h-fix");
+      }
     }
-  }
-);
-
-$(".locandina").mouseenter(
-  function() {
-    $(".general-info").show();
   });
 
 
-// GRAFFE INIZIALI
-});
+// FUNZIONI --------------------------------------------------------------------
 
-// ----------FUNZIONI----------
-
-// FUNZIONE PER FILM
-function getMovies(searchString) {
-  $.ajax(
-    {
-      "url": "https://localhost/php-ajax-dischi/server.php",
-      "data": {
-        "api_key": "eb2f4e43de2e0ba217e256f7b179c8cc",
-        "query": searchString,
-        "language": "it-IT"
-      },
-      "method": "GET",
-      "success": function(data) {
-        risultati("film", data.results);
-      },
-      "error": function(errore) {
-        alert("Errore");
-      }
-    }
-  );
+// Funzione che converte il "vote" con massimale "max" in un numero con massimale 5
+function convertVote(vote, max) {
+  // "Rating5" è il voto con massimale 5.
+  var vote5 = Math.ceil((vote * 5) / max);
+  return vote5;
 }
 
-// FUNZIONE PER TV SERIES
-function getSeries(searchString) {
-  $.ajax(
-    {
-      "url": "https://api.themoviedb.org/3/search/tv",
-      "data": {
-        "api_key": "eb2f4e43de2e0ba217e256f7b179c8cc",
-        "query": searchString,
-        "language": "it-IT"
-      },
-      "method": "GET",
-      "success": function(data) {
-        risultati("series", data.results);
-      },
-      "error": function(errore) {
-        alert("Errore");
-      }
-    }
-  );
+// Funzione che stampa il voto "num" in stelle (max 5)
+function starPrint(num) {
+  var fullStar = $("#fullstar-template").html();
+  var emptyStar = $("#emptystar-template").html();
+  var result = "";
+  for(var i = 0; i < num; i++) {
+    result += fullStar;
+  }
+  for(var j = 0; j < (5-num); j++) {
+    result += emptyStar;
+  }
+  return result;
 }
 
-// FUNZIONE ESTRAI FILM E TV SERIES
-function risultati(tipologia, results) {
-  var source = $("#template").html();
-  var template = Handlebars.compile(source);
-
-  for (var i = 0; i < results.length; i++) {
-
-    // FUNZIONE PER SELEZIONARE FILM O TV SERIES
-    if (tipologia == "film") {
-      titolo = results[i].title;
-      titoloOriginale = results[i].original_title;
-      container = $("#movies-list");
-    } else if (tipologia == "series") {
-      titolo = results[i].name;
-      titoloOriginale = results[i].original_name;
-      container = $("#series-list");
-    }
-
-    // FUNZIONE PER INSERIRE POSTER
-    if (results[i].poster_path == null) {
-      var locandina = "img/no_poster.png";
-    } else {
-      var locandina = "https://image.tmdb.org/t/p/w342"+results[i].poster_path;
-    }
-
-    // VARIABILI UGUALI PER FILM E TV SERIES
-    var lingua = results[i].original_language;
-    var voto = Math.round((results[i].vote_average) / 2);
-    var stelle = "";
-    var bandiera = "";
-
-      // CICLO PER AGGIUNGERE STELLE E RIEMPIRLE
-      for (var j = 1; j <= 5; j++) {
-        if (j <= voto) {
-          stelle += "<i class='fas fa-star star star-full'></i>";
-        } else {
-          stelle += "<i class='fas fa-star star'></i>";
-        }
-      }
-
-      // BANDIERE LINGUE
-      if (lingua == "it") {
-        bandiera = "<img class='flag' src='img/it.svg' alt='ITA'>";
-      } else if (lingua == "en") {
-        bandiera = "<img class='flag' src='img/en.svg' alt='ITA'>";
-      } else if (lingua == "fr") {
-        bandiera = "<img class='flag' src='img/fr.svg' alt='ITA'>";
-      } else if (lingua == "es") {
-        bandiera = "<img class='flag' src='img/es.svg' alt='ITA'>";
-      } else {
-        bandiera = lingua;
-      }
-
-    var context = {
-      "title": titolo,
-      "orig_title": titoloOriginale,
-      "lang": lingua,
-      "vote": voto,
-      "stars": stelle,
-      "flag": bandiera,
-      "type": tipologia,
-      "poster": locandina,
-    }
-    // PREPARAZIONE HTML
-    var html = template(context);
-    // INIETTIAMO HTML IN TAG <UL>
-    $("#movies-list").append(html);
+// Funzione che prende la lingua originale e ne stampa la bandiera
+function savedFlags(lang) {
+  var flagsArray = ["en", "it", "de", "fr", "es", "ro", "ja", "sv"];
+  if(flagsArray.includes(lang)) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
+
+// Funzione che prende un input e ricerca film e serie tv nell'API
+function movieTvSearch(type,inputGenerico) {
+  $.ajax({
+    "url": "https://api.themoviedb.org/3/search/"+type,
+    "data": {
+      "api_key": "4c51a288148bd58a06eb503205aefc6f",
+      "language": "it-IT",
+      "query": inputGenerico,
+      "page": 1,
+      "include_adult": false,
+    },
+    "method": "GET",
+    "success": function(dati) {
+      var risultati = dati.results;
+      // Stampiamo in HTML i film e/o le serie tv se ci sono risultati
+      if(dati.total_results > 0) {
+        $("#"+type+"-section").removeClass("d-none");
+        movieTvPrint(type, risultati);
+      } else {
+        notFound(type);
+      }
+    },
+    "error": function(error) {
+      alert("You've got an error!");
+    }
+  });
+}
+
+// Funzione per nessun risultato trovato
+function notFound(type) {
+  var source = $("#not-found-template").html();
+  $("#"+type+"-section").removeClass("d-none");
+  $("#"+type+"-section").children("i").addClass("d-none");
+  $("#"+type+"-section").append(source);
+}
+
+// Funzione che prende un array e stampa ogni suo FILM nel template handlebars
+function movieTvPrint(type,objectArray) {
+  for(var i=0; i < objectArray.length; i++) {
+
+    // Prendiamo il template di handlebars
+    var source = $("#element-template").html();
+    var template = Handlebars.compile(source);
+
+    // Controlliamo se il poster_path è diverso da null
+    if(objectArray[i].poster_path != null) {
+      var isPosterJS = true;
+    } else {
+      var isPosterJS = false;
+    }
+
+    // Controlliamo se il titolo originale è diverso da quello già mostrato
+    if(objectArray[i].title != objectArray[i].original_title || objectArray[i].name != objectArray[i].original_name) {
+      var hasOgTitle = true;
+    } else {
+      var hasOgTitle = false;
+    }
+
+    // Calcoliamo il voto da 1 a 5
+    var vote10 = objectArray[i].vote_average;
+    var vote5 = convertVote(vote10, 10);
+
+    // Riempiamo il template di handlebars
+    var content = {
+      "movie-id": objectArray[i].id,
+      "title": objectArray[i].title || objectArray[i].name,
+      "isPosterHTML": isPosterJS,
+      "poster-path": objectArray[i].poster_path,
+      "hasOriginalTitle": hasOgTitle,
+      "original_title": objectArray[i].original_title || objectArray[i].original_name,
+      "img-flag": savedFlags(objectArray[i].original_language),
+      "flag-lang": objectArray[i].original_language,
+      "vote_average": starPrint(vote5),
+      "content-type": type
+    };
+    // Appendiamo l'elemento nella lista corrispondente
+    var html = template(content);
+    if(type == "movie") {
+      $("#movies").append(html);
+    } else if (type == "tv") {
+      $("#tv-series").append(html);
+    }
+    // Facciamo sì che la scrollbar della lista sia impostata all'inizio
+    $("ul").scrollLeft(0);
+
+    // Ricerchiamo gli attori
+    getActors(type, objectArray[i].id);
+  }
+}
+
+// Funzione che svuota il valore di html e value dopo la ricerca
+function clearSearch() {
+  $("ul#movies li").remove();
+  $("ul#tv-series li").remove();
+  $("section > p").remove();
+  $("#search-input").val("");
+}
+
+// Funzione che, al click sulla freccia destra/sinistra scrolla nella direzione
+$("main").on("click", "section > i", function() {
+  var scrollPosition = $(this).siblings("ul").scrollLeft();
+  if($(this).hasClass("fa-chevron-circle-right")) {
+    $(this).siblings("ul").scrollLeft(scrollPosition + 400);
+  } else if($(this).hasClass("fa-chevron-circle-left")) {
+    $(this).siblings("ul").scrollLeft(scrollPosition - 400);
+  }
+});
+
+// Funzione che, preso l'id di un film o serie tv, ne cerca gli attori
+function getActors(type, id) {
+  var actorsArray = [];
+
+  $.ajax({
+    "url": "https://api.themoviedb.org/3/"+type+"/"+id+"/credits",
+    "data": {
+      "api_key": "4c51a288148bd58a06eb503205aefc6f",
+    },
+    "method": "GET",
+    "success": function(data) {
+      var risultati = data.cast;
+      if(risultati.length > 0) {
+        if(risultati.length < 4) {
+          for(var i = 0; i < risultati.length; i++)
+          actorsArray.push(risultati[i].name);
+        } else {
+          for(var i = 0; i <= 4; i++) {
+            actorsArray.push(risultati[i].name);
+          }
+        }
+        printActors(id, actorsArray);
+      }
+    },
+    "error": function(err) {
+      alert("errore!");
+    }
+  });
+}
+
+// Funzione che stampa i nomi degli attori in pagina
+function printActors(id, actorsArray) {
+  var joinedActors = actorsArray.join(', ');
+  $('[data-id='+id+']').find('.attori').text("Attori: " + joinedActors);
+}
+
+
+
+});

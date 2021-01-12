@@ -1,77 +1,263 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
-body{
-  background-color: grey;
-}
-
-/* SEARCHBAR */
-header{
-  background-color: black;
-  height: 80px;
-}
-
-.logo{
-  width: 150px;
-  padding: 20px 0 0 20px;
-}
-
-.search{
-  float: right;
-  margin: -45px 30px 0 0 ;
-}
-
-.searchbar{
-  font-size: 15px;
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-}
-
-.search-btn{
-  font-size: 18px;
-  background-color: white;
-  margin-left: -30px;
-  border: none;
-  cursor: pointer;
-}
-/* /SEARCHBAR */
-
-/* POSTERS */
-.locandina{
-  float: left;
-  width: calc(100% / 3);
-  text-align: center;
-  padding: 30px 0 30px 0;
-}
-
-.posters{
-  width: 340px;
-}
-/* /POSTERS */
-
-/* INFO FILM/SERIES */
-#movies-list, #series-list{
-  list-style: none;
-}
-
-.general-info{
+/* Generiche, body e wrapper */
+.d-none {
   display: none;
 }
 
-.star{
-  color: lightgrey;
-  font-size: 13px;
+.totalOpacity {
+  opacity: 0;
 }
 
-.star-full{
-  color: gold;
+body {
+  font-family: 'Roboto', sans-serif;
+  background-image: url('../img/bg.jpg');
+  width: 100%;
+  height: 100vh;
 }
 
-.flag{
-  width: 15px;
+#wrapper {
+  background-color: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
-/* /INFO FILM/SERIES */
+/* fine generiche, body e wrapper */
+
+/* Header */
+header {
+  width: 100%;
+  background-color: rgba(0,0,0,0.6);
+  height: 200px;
+  text-align: center;
+}
+
+header #logo img {
+  width: 200px;
+  height: auto;
+  padding: 20px 0 10px 0;
+}
+
+.h-fix {
+  height: auto;
+  padding: 30px 0;
+}
+
+input#search-input {
+  width: 30%;
+  margin-right: 10px;
+}
+
+input#cerca,
+input#search-input {
+  padding: 5px;
+  border-radius: 7px;
+  border: none;
+  outline: none;
+}
+
+input#cerca {
+  background-color: red;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+/* fine header */
+
+/* Main */
+main {
+  color: #fff;
+  height: calc(100% - 200px);
+  position: relative;
+}
+
+/* Homepage message */
+main #homepage-message {
+  user-select: none;
+  height: 100%;
+}
+
+main #homepage-message p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 50px;
+  width: 80%;
+  font-weight: bold;
+}
+
+main #homepage-message p small {
+  font-size: 35px;
+}
+/* fine homepage message */
+
+main section {
+  width: 100%;
+  position: relative;
+  background-color: rgba(0,0,0,0.6);
+}
+
+main section h2,
+main section > p {
+  padding-left: 30px;
+}
+
+#movie-section {
+  padding-top: 40px;
+}
+
+#tv-section {
+  padding: 20px 0;
+}
+
+ul#movies,
+ul#tv-series {
+  width: 100%;
+  padding: 0 10px;
+  list-style: none;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+section > i {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  font-size: 30px;
+  color: #fff;
+}
+
+section > i:hover {
+  color: red;
+  opacity: 1;
+}
+
+.fa-chevron-circle-left {
+  left: 10px;
+}
+
+.fa-chevron-circle-right {
+  right: 10px;
+}
+
+/* Single-movie */
+.single-movie {
+  position: relative;
+  padding: 20px;
+  border: 2px solid black;
+  width: 185px;
+  height: 278px;
+  margin: 10px 40px 20px 0;
+  text-align: center;
+  flex-shrink: 0;
+  background-color: #000;
+}
+
+.single-movie .titolo {
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.single-movie .immagine-poster {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 185px;
+  height: 278px;
+  transition: opacity 0.5s ease;
+}
+
+.single-movie:hover .immagine-poster {
+  opacity: 0.2;
+}
+
+.single-movie .immagine-poster img {
+  width: 185px;
+  height: 100%;
+}
+
+.single-movie .titolo-og {
+  padding: 20px 0;
+}
+
+.single-movie .lingua-og {
+  padding-top: 10px;
+}
+
+.single-movie .lingua-og img {
+  width: 20px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.single-movie .voto {
+  font-size: 12px;
+  padding-top: 10px;
+}
+
+.single-movie .voto .stars {
+  font-size: 10px;
+}
+/* fine single-movie */
+/* fine main */
+
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 900px) {
+  header #search-input {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  main #homepage-message p {
+    font-size: 40px;
+  }
+
+  main #homepage-message p small {
+    font-size: 25px;
+  }
+
+  header #search-input {
+    width: 70%;
+  }
+}
+
+@media screen and (max-height: 400px) and (max-width: 900px) {
+  #header {
+    height: 120px;
+  }
+
+  main {
+    height: calc(100% - 120px);
+  }
+
+  main #homepage-message p {
+    font-size: 35px;
+  }
+
+  main #homepage-message p small {
+    font-size: 20px;
+  }
+
+  #movie-section {
+    padding-top: 0;
+  }
+
+  main section h2 {
+    font-size: 15px;
+  }
+}
+© 2021 GitHub, Inc.
